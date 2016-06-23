@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.illinois.ncsa.bwmon.MainActivity">
+
+
+    <item android:id="@+id/menu_action_update"
+        android:title="Update" />
+
+</menu>
+
+
+    <!--
+
+
+          <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+    -->
