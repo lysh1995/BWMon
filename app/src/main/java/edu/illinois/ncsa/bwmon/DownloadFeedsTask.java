@@ -1,7 +1,10 @@
 package edu.illinois.ncsa.bwmon;
 
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -107,6 +110,43 @@ class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>> {
             list[i-1] = new Datafeed(setFeed(results.get(i)));
         }
 
+        FeedsSelectActivity.datafeedsList.setDatafeed(list);
+        FeedsSelectActivity.nameList = FeedsSelectActivity.datafeedsList.getNameList();
+        String[] nameList = FeedsSelectActivity.nameList;
+        int length = FeedsSelectActivity.nameList.length;
+        FeedsSelectActivity.checkBoxes = new CheckBox[length];
+        for (int i = 0; i < length; i++){
+            CheckBox checkBox = new CheckBox(FeedsSelectActivity.feedsSelectContext);
+            checkBox.setText(nameList[i]);
+            FeedsSelectActivity.checkList.addView(checkBox);
+            FeedsSelectActivity.checkBoxes[i] = checkBox;
+        }
+
+        Button display = new Button(FeedsSelectActivity.feedsSelectContext);
+        display.setText("Display");
+        FeedsSelectActivity.checkList.addView(display);
+        display.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Datafeed> selected = new ArrayList<Datafeed>();
+                int length = FeedsSelectActivity.nameList.length;
+                for (int i = 0; i < length; i++){
+                    if (FeedsSelectActivity.checkBoxes[i].isChecked())
+                    {
+                        selected.add(FeedsSelectActivity.datafeedsList.getDatafeedList()[i]);
+                    }
+                }
+                FeedsSelectActivity.selectedList = new Datafeed[selected.size()];
+                for (int i = 0; i < selected.size(); i++)
+                {
+                    FeedsSelectActivity.selectedList[i] = selected.get(i);
+                }
+                Intent intent = new Intent(FeedsSelectActivity.feedsSelectContext, MainActivity.class);
+                FeedsSelectActivity.feedsSelectContext.startActivity(intent);
+            }
+        });
+
+        /*
         MainActivity.datafeedsList.setDatafeed(list);
         MainActivity.mSectionsPagerAdapter.setPageTitle(MainActivity.datafeedsList.getNameList());
         MainActivity.mSectionsPagerAdapter.setCount(MainActivity.datafeedsList.getNameList().length);
@@ -130,7 +170,8 @@ class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>> {
 
             }
         });
-        new DownloadFeedDetailsTask(0).execute(MainActivity.datafeedsList.getDatafeedList()[0].getUrl());
+        new DownloadFeedDetailsTask(0).execute(MainActivity.datafeedsList.getDatafeedList()[0].getUrl());*/
+
     }
 
 }

@@ -8,6 +8,7 @@ public class Datafeed {
     String url;
     String type;
     String[] fields;
+    int select = 0;
 
     public Datafeed()
     {

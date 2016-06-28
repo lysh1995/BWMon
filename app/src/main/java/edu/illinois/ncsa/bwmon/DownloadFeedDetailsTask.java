@@ -149,12 +149,13 @@ class DownloadFeedDetailsTask extends AsyncTask<String, Void, ArrayList<String>>
     }
 
     private void displayPieChart(ArrayList<String> result){
+        tv1.setText("");
         setPieChartData(result);
+        System.out.println(MainActivity.drawPie);
         if(MainActivity.drawPie==0)
         {
             drawPie();
             MainActivity.drawPie=1;
-
         }
         else {
             if (MainActivity.mChartView != null) {

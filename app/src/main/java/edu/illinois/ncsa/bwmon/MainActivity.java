@@ -50,11 +50,40 @@ public class MainActivity extends AppCompatActivity {
     public static GraphicalView mChartView;
     public static DefaultRenderer defaultRenderer;
 
+    private  void setView()
+    {
+        MainActivity.datafeedsList.setDatafeed(FeedsSelectActivity.selectedList);
+        MainActivity.mSectionsPagerAdapter.setPageTitle(MainActivity.datafeedsList.getNameList());
+        MainActivity.mSectionsPagerAdapter.setCount(MainActivity.datafeedsList.getNameList().length);
+        // Set up the ViewPager with the sections adapter.
+        MainActivity.mViewPager.setAdapter(MainActivity.mSectionsPagerAdapter);
+        MainActivity.tabLayout.setupWithViewPager(MainActivity.mViewPager);
+        MainActivity.mViewPager.setOffscreenPageLimit(3);
+        MainActivity.mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                new DownloadFeedDetailsTask(position).execute(MainActivity.datafeedsList.getDatafeedList()[position].getUrl());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        new DownloadFeedDetailsTask(0).execute(MainActivity.datafeedsList.getDatafeedList()[0].getUrl());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        drawPie = 0;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -67,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        new DownloadFeedsTask().execute("http://isce.ncsa.illinois.edu/bwmon/datafeeds.html");
+        setView();
     }
 
     @Override
