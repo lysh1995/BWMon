@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -76,7 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        new DownloadFeedDetailsTask(0).execute(MainActivity.datafeedsList.getDatafeedList()[0].getUrl());
+        if (FeedsSelectActivity.selectedList.length > 0)
+            new DownloadFeedDetailsTask(0).execute(MainActivity.datafeedsList.getDatafeedList()[0].getUrl());
+        else
+        {
+            Toast.makeText(MainActivity.mainContext,"Select at least one feed to display details", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
