@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
+import edu.illinois.ncsa.bwmon.DataModel.DataFeedsList;
+import edu.illinois.ncsa.bwmon.DataModel.Datafeed;
+import edu.illinois.ncsa.bwmon.Task.DownloadFeedsTask;
+
 public class FeedsSelectActivity extends AppCompatActivity {
     public static DataFeedsList datafeedsList = new DataFeedsList();
     public static String[] nameList;

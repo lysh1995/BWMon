@@ -1,4 +1,4 @@
-package edu.illinois.ncsa.bwmon;
+package edu.illinois.ncsa.bwmon.Fragment;
 
 /**
  * Created by ylin9 on 2016/6/21.
@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import edu.illinois.ncsa.bwmon.R;
 
 /**
  * A placeholder fragment containing a simple view.

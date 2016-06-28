@@ -1,4 +1,4 @@
-package edu.illinois.ncsa.bwmon;
+package edu.illinois.ncsa.bwmon.Task;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -19,7 +19,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-class DownloadFeedDetailsTask extends AsyncTask<String, Void, ArrayList<String>> {
+import edu.illinois.ncsa.bwmon.DataModel.Datafeed;
+import edu.illinois.ncsa.bwmon.MainActivity;
+import edu.illinois.ncsa.bwmon.R;
+import edu.illinois.ncsa.bwmon.Adapter.SectionsPagerAdapter;
+
+public class DownloadFeedDetailsTask extends AsyncTask<String, Void, ArrayList<String>> {
     private int nPosition;
     private Datafeed df;
     private TextView tv1;
@@ -85,6 +90,7 @@ class DownloadFeedDetailsTask extends AsyncTask<String, Void, ArrayList<String>>
         //View v1 = MainActivity.mViewPager.getChildAt(nPosition);
         v1 = SectionsPagerAdapter.fragmentList.get(nPosition).v;
         tv1 = (TextView) v1.findViewById(R.id.section_label);
+        tv1.clearComposingText();
         if (result.size() > 0){
             df = MainActivity.datafeedsList.getDatafeedList()[nPosition];
             switch (df.getType()){

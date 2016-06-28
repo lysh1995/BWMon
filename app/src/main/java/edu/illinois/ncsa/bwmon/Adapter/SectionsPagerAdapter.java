@@ -1,10 +1,12 @@
-package edu.illinois.ncsa.bwmon;
+package edu.illinois.ncsa.bwmon.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
+
+import edu.illinois.ncsa.bwmon.Fragment.PlaceholderFragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

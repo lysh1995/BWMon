@@ -22,6 +22,10 @@ import org.achartengine.GraphicalView;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 
+import edu.illinois.ncsa.bwmon.Adapter.SectionsPagerAdapter;
+import edu.illinois.ncsa.bwmon.DataModel.DataFeedsList;
+import edu.illinois.ncsa.bwmon.Task.DownloadFeedDetailsTask;
+
 public class MainActivity extends AppCompatActivity {
 
     /**

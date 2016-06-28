@@ -1,4 +1,4 @@
-package edu.illinois.ncsa.bwmon;
+package edu.illinois.ncsa.bwmon.DataModel;
 
 /**
  * Created by ylin9 on 2016/6/21.

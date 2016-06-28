@@ -1,4 +1,4 @@
-package edu.illinois.ncsa.bwmon;
+package edu.illinois.ncsa.bwmon.Task;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -14,7 +14,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>> {
+import edu.illinois.ncsa.bwmon.DataModel.Datafeed;
+import edu.illinois.ncsa.bwmon.FeedsSelectActivity;
+import edu.illinois.ncsa.bwmon.MainActivity;
+
+public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>> {
 
     private InputStream downloadUrl(String urlString) throws IOException {
         // BEGIN_INCLUDE(get_inputstream)
