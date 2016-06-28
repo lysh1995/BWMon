@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                MainActivity.current_position = position;
                 new DownloadFeedDetailsTask(position).execute(MainActivity.datafeedsList.getDatafeedList()[position].getUrl());
             }
 
