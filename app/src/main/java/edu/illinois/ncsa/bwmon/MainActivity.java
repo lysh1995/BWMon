@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public static TabLayout tabLayout;
     public static Toolbar toolbar;
     public static Context mainContext;
+    public static int current_position;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -154,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_action_update) {
+            new DownloadFeedDetailsTask(current_position).execute(MainActivity.datafeedsList.getDatafeedList()[current_position].getUrl());
             return true;
         }
         return super.onOptionsItemSelected(item);

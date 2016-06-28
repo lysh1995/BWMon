@@ -151,7 +151,6 @@ class DownloadFeedDetailsTask extends AsyncTask<String, Void, ArrayList<String>>
     private void displayPieChart(ArrayList<String> result){
         tv1.setText("");
         setPieChartData(result);
-        System.out.println(MainActivity.drawPie);
         if(MainActivity.drawPie==0)
         {
             drawPie();
@@ -162,6 +161,7 @@ class DownloadFeedDetailsTask extends AsyncTask<String, Void, ArrayList<String>>
                 MainActivity.distributionSeries.clear();
                 setPieChartData(result);
                 MainActivity.defaultRenderer.setChartTitle(title);
+                MainActivity.mChartView.zoomReset();
                 MainActivity.mChartView.repaint();
             }
         }
