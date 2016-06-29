@@ -150,32 +150,6 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
             }
         });
 
-        /*
-        MainActivity.datafeedsList.setDatafeed(list);
-        MainActivity.mSectionsPagerAdapter.setPageTitle(MainActivity.datafeedsList.getNameList());
-        MainActivity.mSectionsPagerAdapter.setCount(MainActivity.datafeedsList.getNameList().length);
-        // Set up the ViewPager with the sections adapter.
-        MainActivity.mViewPager.setAdapter(MainActivity.mSectionsPagerAdapter);
-        MainActivity.tabLayout.setupWithViewPager(MainActivity.mViewPager);
-        MainActivity.mViewPager.setOffscreenPageLimit(3);
-        MainActivity.mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                new DownloadFeedDetailsTask(position).execute(MainActivity.datafeedsList.getDatafeedList()[position].getUrl());
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        new DownloadFeedDetailsTask(0).execute(MainActivity.datafeedsList.getDatafeedList()[0].getUrl());*/
-
     }
 
 }

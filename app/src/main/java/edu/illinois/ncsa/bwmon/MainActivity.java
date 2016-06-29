@@ -1,8 +1,11 @@
 package edu.illinois.ncsa.bwmon;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -55,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
     public static int drawPie = 0;
     public static GraphicalView mChartView;
     public static DefaultRenderer defaultRenderer;
+    private Handler handler;
+    private HandlerThread hThread;
+    public long timer = 60 * 1000;
 
     private  void setView()
     {
@@ -90,6 +96,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setUpdate(){
+        hThread = new HandlerThread("HandlerThread");
+        hThread.start();
+        handler = new Handler(hThread.getLooper());
+        Runnable eachMinute = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("one minute");
+                new DownloadFeedDetailsTask(current_position).execute(MainActivity.datafeedsList.getDatafeedList()[current_position].getUrl());
+                handler.postDelayed(this, timer);
+            }
+        };
+        handler.postDelayed(eachMinute, timer);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +129,10 @@ public class MainActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        //Set Feeds data in fragment layout
         setView();
+        //Set timer for automatic update current feeds data
+        setUpdate();
     }
 
     @Override
@@ -134,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-
+        hThread.quit();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
@@ -169,7 +193,18 @@ public class MainActivity extends AppCompatActivity {
             new DownloadFeedDetailsTask(current_position).execute(MainActivity.datafeedsList.getDatafeedList()[current_position].getUrl());
             return true;
         }
+        if (id == R.id.settings) {
+            Intent intent = new Intent(this, SettingActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        hThread.quit();
     }
 
 }

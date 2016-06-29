@@ -6,6 +6,8 @@
 
     <item android:id="@+id/menu_action_update"
         android:title="Update" />
+    <item android:id="@+id/settings"
+        android:title="Settings" />
 
 </menu>
 
