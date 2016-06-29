@@ -104,12 +104,16 @@ public class MainActivity extends AppCompatActivity {
         Runnable eachMinute = new Runnable() {
             @Override
             public void run() {
-                System.out.println(timer + " minutes");
-                new DownloadFeedDetailsTask(current_position).execute(MainActivity.datafeedsList.getDatafeedList()[current_position].getUrl());
-                if (timer > 0)
-                    handler.postDelayed(this, timer * mins);
-                else
+                if (FeedsSelectActivity.selectedList.length > 0){
+                    new DownloadFeedDetailsTask(current_position).execute(MainActivity.datafeedsList.getDatafeedList()[current_position].getUrl());
                     hThread.quit();
+                }
+                else {
+                    if (timer > 0)
+                        handler.postDelayed(this, timer * mins);
+                    else
+                        hThread.quit();
+                }
             }
         };
         handler.postDelayed(eachMinute, timer);

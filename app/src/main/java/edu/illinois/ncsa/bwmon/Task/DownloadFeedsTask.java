@@ -135,6 +135,7 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
     protected void onPostExecute(ArrayList<String> results) {
         //Log.i(TAG, result);
         //fragment.setTitle(result, nPosition);
+        FeedsSelectActivity.swipeContainer.setRefreshing(false);
         setHeader(results.get(0));
         if (curr_version.equals(FeedsSelectActivity.version))
             return;
@@ -156,7 +157,6 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
             FeedsSelectActivity.checkList.addView(checkBox);
             FeedsSelectActivity.checkBoxes[i] = checkBox;
         }
-
         create_display_button();
 
     }
