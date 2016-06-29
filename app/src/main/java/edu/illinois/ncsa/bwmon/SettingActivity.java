@@ -38,6 +38,8 @@ public class SettingActivity extends AppCompatPreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
+    public static Preference timer;
+
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -80,6 +82,10 @@ public class SettingActivity extends AppCompatPreferenceActivity {
             } else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
+                if (preference.equals(timer)) {
+                    MainActivity.timer = Integer.valueOf(stringValue);
+                    System.out.println("timer" + timer);
+                }
                 preference.setSummary(stringValue);
             }
             return true;
@@ -171,6 +177,7 @@ public class SettingActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
+            timer = findPreference("example_text");
             setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences

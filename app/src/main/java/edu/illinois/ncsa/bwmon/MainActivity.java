@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
     public static DefaultRenderer defaultRenderer;
     private Handler handler;
     private HandlerThread hThread;
-    public long timer = 60 * 1000;
+    public static long timer = 1;
+    public static final int mins = 60 * 1000;
 
     private  void setView()
     {
@@ -103,9 +104,12 @@ public class MainActivity extends AppCompatActivity {
         Runnable eachMinute = new Runnable() {
             @Override
             public void run() {
-                System.out.println("one minute");
+                System.out.println(timer + " minutes");
                 new DownloadFeedDetailsTask(current_position).execute(MainActivity.datafeedsList.getDatafeedList()[current_position].getUrl());
-                handler.postDelayed(this, timer);
+                if (timer > 0)
+                    handler.postDelayed(this, timer * mins);
+                else
+                    hThread.quit();
             }
         };
         handler.postDelayed(eachMinute, timer);
@@ -158,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        hThread.quit();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(

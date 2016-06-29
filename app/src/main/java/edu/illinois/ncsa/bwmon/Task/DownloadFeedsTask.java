@@ -19,6 +19,7 @@ import edu.illinois.ncsa.bwmon.FeedsSelectActivity;
 import edu.illinois.ncsa.bwmon.MainActivity;
 
 public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>> {
+    private String curr_version = "";
 
     private InputStream downloadUrl(String urlString) throws IOException {
         // BEGIN_INCLUDE(get_inputstream)
@@ -70,6 +71,7 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
 
     private void setHeader(String header){
         String[] subHeader = header.split(" ");
+        curr_version = subHeader[subHeader.length-1];
         MainActivity.datafeedsList.setList_version(subHeader[subHeader.length-1]);
         String temp = subHeader[0];
         temp = temp.concat(" ");
@@ -98,34 +100,8 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
         return temp;
     }
 
-    /**
-     * Uses the logging framework to display the output of the fetch
-     * operation in the log fragment.
-     */
-    @Override
-    protected void onPostExecute(ArrayList<String> results) {
-        //Log.i(TAG, result);
-        //fragment.setTitle(result, nPosition);
-        setHeader(results.get(0));
-
-        Datafeed[] list = new Datafeed[results.size()-1];
-        for (int i = 1; i < results.size(); i++)
-        {
-            list[i-1] = new Datafeed(setFeed(results.get(i)));
-        }
-
-        FeedsSelectActivity.datafeedsList.setDatafeed(list);
-        FeedsSelectActivity.nameList = FeedsSelectActivity.datafeedsList.getNameList();
-        String[] nameList = FeedsSelectActivity.nameList;
-        int length = FeedsSelectActivity.nameList.length;
-        FeedsSelectActivity.checkBoxes = new CheckBox[length];
-        for (int i = 0; i < length; i++){
-            CheckBox checkBox = new CheckBox(FeedsSelectActivity.feedsSelectContext);
-            checkBox.setText(nameList[i]);
-            FeedsSelectActivity.checkList.addView(checkBox);
-            FeedsSelectActivity.checkBoxes[i] = checkBox;
-        }
-
+    private void create_display_button()
+    {
         Button display = new Button(FeedsSelectActivity.feedsSelectContext);
         display.setText("Display");
         FeedsSelectActivity.checkList.addView(display);
@@ -149,6 +125,39 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
                 FeedsSelectActivity.feedsSelectContext.startActivity(intent);
             }
         });
+    }
+
+    /**
+     * Uses the logging framework to display the output of the fetch
+     * operation in the log fragment.
+     */
+    @Override
+    protected void onPostExecute(ArrayList<String> results) {
+        //Log.i(TAG, result);
+        //fragment.setTitle(result, nPosition);
+        setHeader(results.get(0));
+        if (curr_version.equals(FeedsSelectActivity.version))
+            return;
+        FeedsSelectActivity.version = curr_version;
+        Datafeed[] list = new Datafeed[results.size()-1];
+        for (int i = 1; i < results.size(); i++)
+        {
+            list[i-1] = new Datafeed(setFeed(results.get(i)));
+        }
+
+        FeedsSelectActivity.datafeedsList.setDatafeed(list);
+        FeedsSelectActivity.nameList = FeedsSelectActivity.datafeedsList.getNameList();
+        String[] nameList = FeedsSelectActivity.nameList;
+        int length = FeedsSelectActivity.nameList.length;
+        FeedsSelectActivity.checkBoxes = new CheckBox[length];
+        for (int i = 0; i < length; i++){
+            CheckBox checkBox = new CheckBox(FeedsSelectActivity.feedsSelectContext);
+            checkBox.setText(nameList[i]);
+            FeedsSelectActivity.checkList.addView(checkBox);
+            FeedsSelectActivity.checkBoxes[i] = checkBox;
+        }
+
+        create_display_button();
 
     }
 
