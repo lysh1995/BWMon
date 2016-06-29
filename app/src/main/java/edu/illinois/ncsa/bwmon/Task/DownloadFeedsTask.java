@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import edu.illinois.ncsa.bwmon.DataModel.Datafeed;
+import edu.illinois.ncsa.bwmon.FeedsListUpdateReceiver;
 import edu.illinois.ncsa.bwmon.FeedsSelectActivity;
 import edu.illinois.ncsa.bwmon.MainActivity;
 
@@ -127,6 +128,11 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
         });
     }
 
+    private void sendNotification(){
+        Intent intent = new Intent(FeedsSelectActivity.feedsSelectContext, FeedsListUpdateReceiver.class);
+        FeedsSelectActivity.feedsSelectContext.sendBroadcast(intent);
+    }
+
     /**
      * Uses the logging framework to display the output of the fetch
      * operation in the log fragment.
@@ -158,7 +164,7 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
             FeedsSelectActivity.checkBoxes[i] = checkBox;
         }
         create_display_button();
-
+        sendNotification();
     }
 
 }

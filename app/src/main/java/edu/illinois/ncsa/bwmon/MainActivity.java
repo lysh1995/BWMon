@@ -63,8 +63,10 @@ public class MainActivity extends AppCompatActivity {
     public static long timer = 1;
     public static final int mins = 60 * 1000;
 
-    private  void setView()
+    public static void setView()
     {
+        if (FeedsSelectActivity.selectedList == null || FeedsSelectActivity.selectedList.length == 0)
+            return;
         MainActivity.datafeedsList.setDatafeed(FeedsSelectActivity.selectedList);
         MainActivity.mSectionsPagerAdapter.setPageTitle(MainActivity.datafeedsList.getNameList());
         MainActivity.mSectionsPagerAdapter.setCount(MainActivity.datafeedsList.getNameList().length);
