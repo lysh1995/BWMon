@@ -33,7 +33,6 @@ public class FeedsSelectActivity extends AppCompatActivity {
         Runnable eachMinute = new Runnable() {
             @Override
             public void run() {
-                System.out.println("ten minute");
                 new DownloadFeedsTask().execute("http://isce.ncsa.illinois.edu/bwmon/datafeeds.html");
                 handler.postDelayed(this, timer);
             }

@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private HandlerThread hThread;
     public static long timer = 1;
     public static final int mins = 60 * 1000;
+    public static int mode = 0;
 
     public static void setView()
     {
@@ -127,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         drawPie = 0;
+        mode = 1;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -214,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed(){
         super.onBackPressed();
         hThread.quit();
+        mode = 0;
     }
 
 }

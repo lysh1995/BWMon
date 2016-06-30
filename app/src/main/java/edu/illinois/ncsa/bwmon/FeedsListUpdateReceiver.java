@@ -12,6 +12,7 @@ public class FeedsListUpdateReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
-        MainActivity.setView();
+        if (MainActivity.mode == 1)
+            MainActivity.setView();
     }
 }
