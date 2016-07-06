@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:contextClickable="false"
-        android:background="#010101"
+        android:background="#ffffff"
         android:clickable="false" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -23,7 +23,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.achartengine.GraphicalView;
 import org.achartengine.model.CategorySeries;
+import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.DefaultRenderer;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 import edu.illinois.ncsa.bwmon.Adapter.SectionsPagerAdapter;
 import edu.illinois.ncsa.bwmon.DataModel.DataFeedsList;
@@ -58,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     public static int drawPie = 0;
     public static GraphicalView mChartView;
     public static DefaultRenderer defaultRenderer;
+    public static XYMultipleSeriesRenderer mRenderer;
+    public static XYMultipleSeriesDataset dataset;
     private Handler handler;
     private HandlerThread hThread;
     public static long timer = 1;
