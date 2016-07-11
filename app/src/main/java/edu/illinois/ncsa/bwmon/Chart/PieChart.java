@@ -1,6 +1,5 @@
 package edu.illinois.ncsa.bwmon.Chart;
 
-import android.graphics.Color;
 import android.view.ViewGroup;
 
 import org.achartengine.ChartFactory;
@@ -19,7 +18,6 @@ import edu.illinois.ncsa.bwmon.Task.DownloadFeedDetailsTask;
  */
 public class PieChart {
     private static String title;
-    private static final int[] colors = { Color.BLUE, Color.MAGENTA, Color.GREEN, Color.CYAN, Color.RED, Color.YELLOW };
     private static double[] distribution;
 
     public static void setPieChartData(ArrayList<String> result){
@@ -32,8 +30,10 @@ public class PieChart {
             distribution[i] = Double.parseDouble(second_line[i]);
         }
         MainActivity.distributionSeries = new CategorySeries(title);
+        MainActivity.datafeedsList.getDatafeedList()[MainActivity.current_position].name_list = new ArrayList<String>();
         for(int i=0 ;i < distribution.length;i++){
             // Adding a slice with its values and name to the Pie Chart
+            MainActivity.datafeedsList.getDatafeedList()[MainActivity.current_position].name_list.add(first_line[i+2]);
             MainActivity.distributionSeries.add(first_line[i+2], distribution[i]);
         }
     }
@@ -42,7 +42,7 @@ public class PieChart {
         MainActivity.defaultRenderer  = new DefaultRenderer();
         for(int i = 0 ;i<distribution.length;i++){
             SimpleSeriesRenderer seriesRenderer = new SimpleSeriesRenderer();
-            seriesRenderer.setColor(colors[i]);
+            seriesRenderer.setColor(MainActivity.color_list[MainActivity.current_position][i]);
             seriesRenderer.setDisplayBoundingPoints(true);
             // Adding a renderer for a slice
             MainActivity.defaultRenderer.addSeriesRenderer(seriesRenderer);

@@ -1,6 +1,5 @@
 package edu.illinois.ncsa.bwmon.Task;
 
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
@@ -14,20 +13,17 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import edu.illinois.ncsa.bwmon.Adapter.SectionsPagerAdapter;
+import edu.illinois.ncsa.bwmon.Chart.LineChart;
+import edu.illinois.ncsa.bwmon.Chart.PieChart;
 import edu.illinois.ncsa.bwmon.DataModel.Datafeed;
 import edu.illinois.ncsa.bwmon.MainActivity;
 import edu.illinois.ncsa.bwmon.R;
-import edu.illinois.ncsa.bwmon.Chart.LineChart;
-import edu.illinois.ncsa.bwmon.Chart.PieChart;
 
 public class DownloadFeedDetailsTask extends AsyncTask<String, Void, ArrayList<String>> {
     private int nPosition;
     private Datafeed df;
     private TextView tv1;
     public static View v1;
-    private final int[] colors = { Color.BLUE, Color.MAGENTA, Color.GREEN, Color.CYAN, Color.RED, Color.YELLOW };
-    private double[] distribution;
-    private String title;
     private InputStream downloadUrl(String urlString) throws IOException {
         // BEGIN_INCLUDE(get_inputstream)
         URL url = new URL(urlString);

@@ -15,7 +15,7 @@
         based on your message history
     </string>
 
-    <string name="pref_title_update_time">Set update time period (Minutes)</string>
+    <string name="pref_title_update_time">Sync frequency (Minutes)</string>
     <integer name="pref_default_update_time">1</integer>
 
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>

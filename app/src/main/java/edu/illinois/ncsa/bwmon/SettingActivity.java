@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceScreen;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -21,6 +23,10 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import java.util.List;
+
+import edu.illinois.ncsa.bwmon.Chart.LineChart;
+import edu.illinois.ncsa.bwmon.Chart.PieChart;
+import edu.illinois.ncsa.bwmon.DataModel.Datafeed;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -39,6 +45,8 @@ public class SettingActivity extends AppCompatPreferenceActivity {
      * to reflect its new value.
      */
     public static Preference timer;
+    public static ListPreference[] colors;
+    public static Context settingContext;
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -50,7 +58,21 @@ public class SettingActivity extends AppCompatPreferenceActivity {
                 // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
-
+                Datafeed df = MainActivity.datafeedsList.getDatafeedList()[MainActivity.current_position];
+                if (df.getType() != "text") {
+                    for (int i = 0; i < df.name_list.size(); i++) {
+                        if (preference.equals(colors[i])) {
+                            MainActivity.color_list[MainActivity.current_position][i] = Integer.valueOf(stringValue);
+                            if (df.getType().equals("linechart"))
+                            {
+                                LineChart.drawLine();
+                            }
+                            else{
+                                PieChart.drawPie();
+                            }
+                        }
+                    }
+                }
                 // Set the summary to reflect the new value.
                 preference.setSummary(
                         index >= 0
@@ -82,9 +104,9 @@ public class SettingActivity extends AppCompatPreferenceActivity {
             } else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
+
                 if (preference.equals(timer)) {
-                    MainActivity.timer = Integer.valueOf(stringValue);
-                    System.out.println("timer" + timer);
+                    MainActivity.timer[MainActivity.current_position] = Integer.valueOf(stringValue);
                 }
                 preference.setSummary(stringValue);
             }
@@ -126,6 +148,7 @@ public class SettingActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+        settingContext = this;
     }
 
     /**
@@ -178,14 +201,37 @@ public class SettingActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             timer = findPreference("example_text");
+            Long time = new Long(MainActivity.timer[MainActivity.current_position]);
+            timer.setSummary(time.toString());
             setHasOptionsMenu(true);
-
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
+
+            PreferenceScreen ps = getPreferenceScreen();
+            Datafeed df = MainActivity.datafeedsList.getDatafeedList()[MainActivity.current_position];
+            if (df.getType() != "text")
+            {
+                colors = new ListPreference[df.name_list.size()];
+                for (int i = 0; i < df.name_list.size(); i++)
+                {
+                    CharSequence[] entries = { "BLUE", "MAGENTA", "GREEN", "CYAN", "RED", "YELLOW"};
+                    String[] entryValues = { ((Integer)Color.BLUE).toString(), ((Integer)Color.MAGENTA).toString(), ((Integer)Color.GREEN).toString(), ((Integer)Color.CYAN).toString(), ((Integer)Color.RED).toString(), ((Integer)Color.YELLOW).toString()};
+                    colors[i] = new ListPreference(SettingActivity.settingContext);
+                    colors[i].setEntries(entries);
+                    colors[i].setEntryValues(entryValues);
+                    int color = MainActivity.color_list[MainActivity.current_position][i];
+                    colors[i].setTitle(df.name_list.get(i).concat(" display color"));
+                    colors[i].setKey("Color " + i);
+                    ps.addPreference(colors[i]);
+                    bindPreferenceSummaryToValue(colors[i]);
+                    colors[i].setSummary(entries[MainActivity.colorToIndex(color)]);
+                }
+            }
             bindPreferenceSummaryToValue(findPreference("example_text"));
             bindPreferenceSummaryToValue(findPreference("example_list"));
+            timer.setSummary(time.toString());
         }
 
         @Override

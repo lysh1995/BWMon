@@ -1,5 +1,7 @@
 package edu.illinois.ncsa.bwmon.DataModel;
 
+import java.util.ArrayList;
+
 /**
  * Created by ylin9 on 2016/6/21.
  */
@@ -8,6 +10,7 @@ public class Datafeed {
     String url;
     String type;
     String[] fields;
+    public ArrayList<String> name_list = new ArrayList<String>();
     int select = 0;
 
     public Datafeed()

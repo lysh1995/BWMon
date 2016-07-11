@@ -22,7 +22,6 @@ import edu.illinois.ncsa.bwmon.Task.DownloadFeedDetailsTask;
  */
 public class LineChart {
     private static String title;
-    private static final int[] colors = { Color.BLUE, Color.MAGENTA, Color.GREEN, Color.CYAN, Color.RED, Color.YELLOW };
 
     public static void setLineChartData(ArrayList<String> result){
         String[] first_line = result.get(0).split(",");
@@ -36,7 +35,9 @@ public class LineChart {
         else
         {
             XYSeries[] xyseries = new XYSeries[num_y];
+            MainActivity.datafeedsList.getDatafeedList()[MainActivity.current_position].name_list = new ArrayList<String>();
             for (int i = 0; i < xyseries.length; i++){
+                MainActivity.datafeedsList.getDatafeedList()[MainActivity.current_position].name_list.add(first_line[i+3]);
                 String name = x_name.concat(" vs ").concat(first_line[i+3]);
                 xyseries[i] = new XYSeries(name);
             }
@@ -57,7 +58,7 @@ public class LineChart {
                 MainActivity.dataset.addSeries(xyseries[i]);
                 XYSeriesRenderer renderer = new XYSeriesRenderer();
                 renderer.setLineWidth(2);
-                renderer.setColor(colors[i]);
+                renderer.setColor(MainActivity.color_list[MainActivity.current_position][i]);
                 renderer.setDisplayBoundingPoints(true);
                 renderer.setPointStyle(PointStyle.CIRCLE);
                 renderer.setPointStrokeWidth(3);

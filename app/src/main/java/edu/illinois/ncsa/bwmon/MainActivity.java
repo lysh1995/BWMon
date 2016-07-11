@@ -2,6 +2,7 @@ package edu.illinois.ncsa.bwmon;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,7 +33,7 @@ import edu.illinois.ncsa.bwmon.DataModel.DataFeedsList;
 import edu.illinois.ncsa.bwmon.Task.DownloadFeedDetailsTask;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static int[][] color_list;
     /**
      * The {@link PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -64,14 +65,40 @@ public class MainActivity extends AppCompatActivity {
     public static XYMultipleSeriesDataset dataset;
     private Handler handler;
     private HandlerThread hThread;
-    public static long timer = 1;
+    public static long[] timer;
     public static final int mins = 60 * 1000;
     public static int mode = 0;
+    public static int[] allColor = { Color.BLUE, Color.MAGENTA, Color.GREEN, Color.CYAN, Color.RED, Color.YELLOW };
+
+    public static int colorToIndex(int color){
+        switch (color){
+            case Color.BLUE:
+                return 0;
+            case Color.MAGENTA:
+                return 1;
+            case Color.GREEN:
+                return 2;
+            case Color.CYAN:
+                return 3;
+            case Color.RED:
+                return 4;
+            case Color.YELLOW:
+                return 5;
+
+        }
+        return -1;
+    }
 
     public static void setView()
     {
         if (FeedsSelectActivity.selectedList == null || FeedsSelectActivity.selectedList.length == 0)
             return;
+        timer = new long[FeedsSelectActivity.selectedList.length];
+        color_list = new int[FeedsSelectActivity.selectedList.length][6];
+        for (int i = 0; i < FeedsSelectActivity.selectedList.length; i ++){
+            timer[i] = 1;
+            color_list[i] = allColor;
+        }
         MainActivity.datafeedsList.setDatafeed(FeedsSelectActivity.selectedList);
         MainActivity.mSectionsPagerAdapter.setPageTitle(MainActivity.datafeedsList.getNameList());
         MainActivity.mSectionsPagerAdapter.setCount(MainActivity.datafeedsList.getNameList().length);
@@ -116,14 +143,15 @@ public class MainActivity extends AppCompatActivity {
                     hThread.quit();
                 }
                 else {
-                    if (timer > 0)
-                        handler.postDelayed(this, timer * mins);
+                    if (timer[current_position] > 0)
+                        handler.postDelayed(this, timer[current_position] * mins);
                     else
                         hThread.quit();
                 }
             }
         };
-        handler.postDelayed(eachMinute, timer);
+        if (timer != null)
+            handler.postDelayed(eachMinute, timer[current_position]);
     }
 
     @Override
