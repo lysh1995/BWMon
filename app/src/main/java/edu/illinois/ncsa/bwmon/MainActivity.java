@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         color_list = new int[FeedsSelectActivity.selectedList.length][6];
         for (int i = 0; i < FeedsSelectActivity.selectedList.length; i ++){
             timer[i] = 1;
-            color_list[i] = allColor;
+            color_list[i] = new int[]{ Color.BLUE, Color.MAGENTA, Color.GREEN, Color.CYAN, Color.RED, Color.YELLOW };
         }
         MainActivity.datafeedsList.setDatafeed(FeedsSelectActivity.selectedList);
         MainActivity.mSectionsPagerAdapter.setPageTitle(MainActivity.datafeedsList.getNameList());
@@ -123,8 +123,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        if (FeedsSelectActivity.selectedList.length > 0)
+        if (FeedsSelectActivity.selectedList.length > 0){
             new DownloadFeedDetailsTask(0).execute(MainActivity.datafeedsList.getDatafeedList()[0].getUrl());
+        }
         else
         {
             Toast.makeText(MainActivity.mainContext,"Select at least one feed to display details", Toast.LENGTH_LONG).show();

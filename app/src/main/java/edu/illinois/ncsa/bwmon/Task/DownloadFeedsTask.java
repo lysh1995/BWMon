@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.illinois.ncsa.bwmon.DataModel.Datafeed;
 import edu.illinois.ncsa.bwmon.FeedsListUpdateReceiver;
@@ -109,12 +110,14 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
         display.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<String> select_list = new ArrayList<String>();
                 ArrayList<Datafeed> selected = new ArrayList<Datafeed>();
                 int length = FeedsSelectActivity.nameList.length;
                 for (int i = 0; i < length; i++){
                     if (FeedsSelectActivity.checkBoxes[i].isChecked())
                     {
                         selected.add(FeedsSelectActivity.datafeedsList.getDatafeedList()[i]);
+                        select_list.add(FeedsSelectActivity.datafeedsList.getDatafeedList()[i].getName());
                     }
                 }
                 FeedsSelectActivity.selectedList = new Datafeed[selected.size()];
@@ -122,6 +125,9 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
                 {
                     FeedsSelectActivity.selectedList[i] = selected.get(i);
                 }
+                FeedsSelectActivity.userLocalStore.clearUserData();
+                FeedsSelectActivity.userLocalStore.storeUserData(select_list);
+                FeedsSelectActivity.userLocalStore.setUserSelected(true);
                 Intent intent = new Intent(FeedsSelectActivity.feedsSelectContext, MainActivity.class);
                 FeedsSelectActivity.feedsSelectContext.startActivity(intent);
             }
@@ -143,15 +149,14 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
         //fragment.setTitle(result, nPosition);
         FeedsSelectActivity.swipeContainer.setRefreshing(false);
         setHeader(results.get(0));
-        if (curr_version.equals(FeedsSelectActivity.version))
-            return;
         FeedsSelectActivity.version = curr_version;
         Datafeed[] list = new Datafeed[results.size()-1];
+        HashMap<String, Datafeed> map = new HashMap<String, Datafeed>();
         for (int i = 1; i < results.size(); i++)
         {
             list[i-1] = new Datafeed(setFeed(results.get(i)));
+            map.put(list[i-1].getName(),list[i-1]);
         }
-
         FeedsSelectActivity.datafeedsList.setDatafeed(list);
         FeedsSelectActivity.nameList = FeedsSelectActivity.datafeedsList.getNameList();
         String[] nameList = FeedsSelectActivity.nameList;
@@ -165,6 +170,28 @@ public class DownloadFeedsTask extends AsyncTask<String, Void, ArrayList<String>
         }
         create_display_button();
         sendNotification();
+        if (curr_version.equals(FeedsSelectActivity.version)){
+            if (FeedsSelectActivity.userLocalStore.getUserSelected() && FeedsSelectActivity.start){
+                ArrayList<String> selected_list = FeedsSelectActivity.userLocalStore.getUserSelection();
+                int size = selected_list.size();
+                ArrayList<Datafeed> temp_list = new ArrayList<Datafeed>();
+                for (int i = 0; i < selected_list.size(); i++)
+                {
+                    if (map.containsKey(selected_list.get(i))){
+                        temp_list.add(map.get(selected_list.get(i)));
+                    }
+                }
+                FeedsSelectActivity.selectedList = new Datafeed[temp_list.size()];
+                for (int i = 0; i < temp_list.size(); i ++){
+                    FeedsSelectActivity.selectedList[i] = temp_list.get(i);
+                }
+                FeedsSelectActivity.start = false;
+                Intent intent = new Intent(FeedsSelectActivity.feedsSelectContext, MainActivity.class);
+                FeedsSelectActivity.feedsSelectContext.startActivity(intent);
+                return;
+            }
+        }
+        FeedsSelectActivity.userLocalStore.setUserSelected(false);
     }
 
 }

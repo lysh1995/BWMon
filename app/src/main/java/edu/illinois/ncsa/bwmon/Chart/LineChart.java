@@ -1,6 +1,7 @@
 package edu.illinois.ncsa.bwmon.Chart;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -76,10 +77,11 @@ public class LineChart {
         }
         MainActivity.mChartView = ChartFactory.getLineChartView(MainActivity.mainContext, MainActivity.dataset, MainActivity.mRenderer);
         MainActivity.mRenderer.setPanEnabled(false, false);
-        MainActivity.mRenderer.setLabelsTextSize(40);
-        MainActivity.mRenderer.setLegendTextSize(40);
-        MainActivity.mRenderer.setChartTitleTextSize(60);
+        MainActivity.mRenderer.setLabelsTextSize(20);
+        MainActivity.mRenderer.setLegendTextSize(20);
+        MainActivity.mRenderer.setChartTitleTextSize(20);
         MainActivity.mRenderer.setMarginsColor(Color.argb(0x00, 0xff, 0x00, 0x00));
+        MainActivity.mRenderer.setYLabelsAlign(Paint.Align.LEFT);
         chartContainer.addView(MainActivity.mChartView,0);
     }
 }

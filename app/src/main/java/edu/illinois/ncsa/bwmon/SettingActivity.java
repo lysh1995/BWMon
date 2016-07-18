@@ -4,6 +4,7 @@ package edu.illinois.ncsa.bwmon;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.Ringtone;
@@ -14,11 +15,11 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceScreen;
-import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
@@ -194,8 +195,16 @@ public class SettingActivity extends AppCompatPreferenceActivity {
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
+        public static void removeFromSharedPreferences(Preference preference, Context mContext, String key) {
+            if (mContext != null) {
+                SharedPreferences mSharedPreferences = preference.getSharedPreferences();
+                if (mSharedPreferences != null)
+                    mSharedPreferences.edit().remove(key).commit();
+            }
+        }
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -227,11 +236,13 @@ public class SettingActivity extends AppCompatPreferenceActivity {
                     ps.addPreference(colors[i]);
                     bindPreferenceSummaryToValue(colors[i]);
                     colors[i].setSummary(entries[MainActivity.colorToIndex(color)]);
+                    colors[i].setDefaultValue(entries[MainActivity.colorToIndex(color)]);
                 }
             }
             bindPreferenceSummaryToValue(findPreference("example_text"));
             bindPreferenceSummaryToValue(findPreference("example_list"));
             timer.setSummary(time.toString());
+            timer.setDefaultValue(time.toString());
         }
 
         @Override

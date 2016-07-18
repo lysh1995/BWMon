@@ -25,6 +25,8 @@ public class FeedsSelectActivity extends AppCompatActivity {
     private HandlerThread hThread;
     public long timer = 10 * 60 * 1000;
     public static String version = "";
+    public static UserLocalStore userLocalStore;
+    public static boolean start = true;
 
     private void setUpdate(){
         hThread = new HandlerThread("HandlerThread");
@@ -43,10 +45,12 @@ public class FeedsSelectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userLocalStore = new UserLocalStore(this);
         setContentView(R.layout.activity_feeds_select);
         checkList = (LinearLayout) findViewById(R.id.checkList);
         checkList.removeAllViews();
         feedsSelectContext = this;
+        setUpdate();
         new DownloadFeedsTask().execute("http://isce.ncsa.illinois.edu/bwmon/datafeeds.html");
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -66,13 +70,13 @@ public class FeedsSelectActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        setUpdate();
-
     }
 
     @Override
     public void onBackPressed(){
         super.onBackPressed();
+        userLocalStore.setUserSelected(false);
+        userLocalStore.clearUserData();
         hThread.quit();
     }
 }
