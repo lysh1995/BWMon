@@ -130,6 +130,9 @@ public class MainActivity extends AppCompatActivity {
         {
             Toast.makeText(MainActivity.mainContext,"Select at least one feed to display details", Toast.LENGTH_LONG).show();
         }
+        for (int i = 0; i < FeedsSelectActivity.selectedList.length; i++){
+            new DownloadFeedDetailsTask(i).execute(MainActivity.datafeedsList.getDatafeedList()[i].getUrl());
+        }
     }
 
     private void setUpdate(){

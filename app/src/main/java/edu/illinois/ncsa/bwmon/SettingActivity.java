@@ -63,13 +63,16 @@ public class SettingActivity extends AppCompatPreferenceActivity {
                 if (df.getType() != "text") {
                     for (int i = 0; i < df.name_list.size(); i++) {
                         if (preference.equals(colors[i])) {
-                            MainActivity.color_list[MainActivity.current_position][i] = Integer.valueOf(stringValue);
-                            if (df.getType().equals("linechart"))
+                            if (!stringValue.equals(""))
                             {
-                                LineChart.drawLine();
-                            }
-                            else{
-                                PieChart.drawPie();
+                                MainActivity.color_list[MainActivity.current_position][i] = Integer.valueOf(stringValue);
+                                if (df.getType().equals("linechart"))
+                                {
+                                    LineChart.drawLine();
+                                }
+                                else{
+                                    PieChart.drawPie();
+                                }
                             }
                         }
                     }
