@@ -1,6 +1,7 @@
 package edu.illinois.ncsa.bwmon.Task;
 
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class DownloadFeedDetailsTask extends AsyncTask<String, Void, ArrayList<S
     private Datafeed df;
     private TextView tv1;
     public static View v1;
+    public static SwipeRefreshLayout swipeContainer;
     private InputStream downloadUrl(String urlString) throws IOException {
         // BEGIN_INCLUDE(get_inputstream)
         URL url = new URL(urlString);
@@ -83,6 +85,23 @@ public class DownloadFeedDetailsTask extends AsyncTask<String, Void, ArrayList<S
         v1 = SectionsPagerAdapter.fragmentList.get(nPosition).v;
         tv1 = (TextView) v1.findViewById(R.id.section_label);
         tv1.clearComposingText();
+        swipeContainer = (SwipeRefreshLayout) v1.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                new DownloadFeedDetailsTask(nPosition).execute(MainActivity.datafeedsList.getDatafeedList()[nPosition].getUrl());
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        swipeContainer.setRefreshing(false);
         if (result.size() > 0){
             df = MainActivity.datafeedsList.getDatafeedList()[nPosition];
             switch (df.getType()){
